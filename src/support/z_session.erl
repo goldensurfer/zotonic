@@ -461,6 +461,7 @@ save_persist(Session) ->
 
 %% @doc Return a new page record, monitor the started page process because we want to know about normal exits
 page_start(PageId) ->
+    lager:info("page_start: ~p",[PageId]),
     {ok,PagePid} = z_session_page:start_link([{session_pid, self()}]),
     erlang:monitor(process, PagePid),
     #page{page_pid=PagePid, page_id=PageId }.

@@ -166,6 +166,8 @@ observe_media_stillimage(#media_stillimage{id=Id, props=Props}, Context) ->
 %% @doc Handle the form submit from the "new media" dialog.  The form is defined in templates/_media_upload_panel.tpl.
 %% @spec event(Event, Context1) -> Context2
 event(#submit{message={add_video_embed, EventProps}}, Context) ->
+    lager:info("Submit media page...~p",[Context]),
+
     Actions = proplists:get_value(actions, EventProps, []),
     Id = proplists:get_value(id, EventProps),
     Callback = proplists:get_value(callback, EventProps),
@@ -190,10 +192,15 @@ event(#submit{message={add_video_embed, EventProps}}, Context) ->
 
             case m_rsc:insert(Props, Context) of
                 {ok, MediaId} ->
+                    lager:info("Props: ~p",[Props]),
+                    lager:info("Context: ~p",[Context]),
+                    lager:info("Media ID mrscr:insert: ~p",[MediaId]),
                     spawn(fun() -> preview_create(MediaId, Props, Context) end),
                     
                     {_, ContextLink} = mod_admin:do_link(z_convert:to_integer(SubjectId), Predicate, 
                                                          MediaId, Callback, Context),
+
+                    lager:info("ContexLink: ~p",[ContextLink]),
 
                     ContextRedirect = case SubjectId of
                         undefined ->
@@ -217,6 +224,7 @@ event(#submit{message={add_video_embed, EventProps}}, Context) ->
             Props = [
                 {oembed_url, EmbedUrl}
             ],
+            lager:info("mrsc:update..."),
             case m_rsc:update(Id, Props, Context) of
                 {ok, _} ->
                     z_render:wire([{dialog_close, []} | Actions], Context);

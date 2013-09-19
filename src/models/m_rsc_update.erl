@@ -233,6 +233,7 @@ update(Id, Props, Options, Context) when is_integer(Id) orelse Id == insert_rsc 
                                                         InsPropsN),
                                 {InsertId, SafePropsN, InsPropsN, [], IsACat};
                             false ->
+                                lager:info("Ctx: ~p",[Ctx]),
                                 throw({error, eacces})
                         end;
                     _ ->
@@ -305,6 +306,7 @@ update(Id, Props, Options, Context) when is_integer(Id) orelse Id == insert_rsc 
             end,
             % End of transaction function
 
+
             case z_db:transaction(TransactionF, Context) of
                 {ok, NewId, notchanged} ->
                     {ok, NewId};
@@ -351,6 +353,7 @@ update(Id, Props, Options, Context) when is_integer(Id) orelse Id == insert_rsc 
                 false -> {error, non_authoritative};
                 true -> {error, eacces}
             end,
+            lager:info("E -> ~p",[E]),
             throw(E)
     end.
 

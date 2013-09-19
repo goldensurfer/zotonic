@@ -115,10 +115,13 @@ transaction(Function, Options, Context) ->
 
 % @doc Perform the transaction, return error when the transaction function crashed
 transaction1(Function, #context{dbc=undefined} = Context) ->
+    lager:info("Context: ~p", [Context]),
     case has_connection(Context) of
         true ->
             Host     = Context#context.host,
+            lager:info("z_db: Host: ~p",[Host]),
             {ok, C}  = pgsql_pool:get_connection(Host),
+            lager:info("C: ~p",[C]),
             Context1 = Context#context{dbc=C},
             Result = try
                         case pgsql:squery(C, "BEGIN") of

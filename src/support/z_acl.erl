@@ -62,6 +62,7 @@
 is_allowed(_Action, _Object, #context{acl=admin}) ->
     true;
 is_allowed(_Action, _Object, #context{user_id=?ACL_ADMIN_USER_ID}) ->
+    lager:info("USER_ID: ~p",[?ACL_ADMIN_USER_ID]),
     true;
 is_allowed(Action, Object, Context) ->
     case z_notifier:first(#acl_is_allowed{action=Action, object=Object}, Context) of

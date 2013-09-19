@@ -63,6 +63,7 @@
 
 
 init(ConfigProps) ->
+    lager:info("controller static_pages..."),
     Root     = proplists:get_value(root, ConfigProps),
     DirIndex = z_convert:to_bool(proplists:get_value(allow_directory_index, ConfigProps)),
     UseCache = proplists:get_value(use_cache, ConfigProps, false),

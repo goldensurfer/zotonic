@@ -36,6 +36,7 @@
 vary(_Params, _Context) -> nocache.
 
 render(Params, _Vars, Context) ->
+    lager:info("scomp_base_pager render..."),
     Result       = proplists:get_value(result, Params),
     Dispatch     = case proplists:get_value(dispatch, Params) of
                         undefined -> z_context:get(zotonic_dispatch, Context, search);
@@ -83,6 +84,7 @@ render(Params, _Vars, Context) ->
     end.
 
 build_html(Page, Pages, Dispatch, DispatchArgs, Context) ->
+    lager:info("scomp_base_apger build_html..."),
     {S,M,E} = pages(Page, Pages),
     Urls = urls(S, M, E, Dispatch, DispatchArgs, Context),
     Props = [

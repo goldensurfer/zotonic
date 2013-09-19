@@ -34,7 +34,9 @@
 -include_lib("controller_webmachine_helper.hrl").
 -include_lib("include/zotonic.hrl").
 
-init(DispatchArgs) -> {ok, DispatchArgs}.
+init(DispatchArgs) -> 
+    lager:info("controller_postback..."),
+    {ok, DispatchArgs}.
 
 service_available(ReqData, DispatchArgs) when is_list(DispatchArgs) ->
     Context  = z_context:new(ReqData, ?MODULE),

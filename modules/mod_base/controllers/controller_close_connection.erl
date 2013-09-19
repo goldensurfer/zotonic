@@ -31,5 +31,6 @@
 init(_Args) -> {ok, []}.
 
 to_html(ReqData, State) ->
+    lager:info("controller_close_connection..."),
     ReqData2 = wrq:set_resp_header("Connection", "close", ReqData),
     {"", ReqData2, State}.

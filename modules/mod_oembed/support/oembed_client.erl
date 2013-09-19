@@ -62,6 +62,7 @@ init(Context) ->
 
 %% @doc Discover
 handle_call({discover, Url}, _From, State) ->
+    io:fwrite("oembed_client: discover: ~p~n",[Url]),
     {reply, do_discover(Url, State), State};
 
 handle_call({providers, Url}, _From, State) ->
@@ -154,6 +155,7 @@ oembed_request(RequestUrl) ->
         {relaxed, true}
     ],
     {ok, {{_, Code, _}, Headers, Body}} = httpc:request(get, {RequestUrl, []}, HttpOptions, []),
+    lager:info("oembed_reqest: Body: ~p",[Body]),
     case Code of
         200 -> 
             {ok, z_convert:convert_json(mochijson2:decode(Body))};

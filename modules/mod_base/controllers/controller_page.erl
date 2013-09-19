@@ -65,6 +65,7 @@ is_authorized(ReqData, Context) ->
 
 %% @doc Show the page.  Add a noindex header when requested by the editor.
 html(Context) ->
+    lager:info("controller_page origin... html"),
     Id = get_id(Context),
     Context1 = z_context:set_noindex_header(m_rsc:p(Id, seo_noindex, Context), Context),
 
