@@ -92,6 +92,7 @@ send(#email{} = Email, Context) ->
 send(Id, #email{} = Email, Context) ->
     Id1 = z_convert:to_binary(Id),
     Context1 = z_context:depickle(z_context:pickle(Context)),
+    lager:info("z_email: send -> ~p",[Email]),
     gen_server:cast(?MODULE, {send, Id1, Email, Context1}),
     {ok, Id1}.
 

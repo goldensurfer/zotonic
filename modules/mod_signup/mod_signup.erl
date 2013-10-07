@@ -56,7 +56,9 @@ observe_identity_verification(#identity_verification{user_id=UserId, identity=un
     request_verification(UserId, Context);
 observe_identity_verification(#identity_verification{user_id=UserId, identity=Ident}, Context) ->
     case proplists:get_value(type, Ident) of
-        <<"email">> -> send_verify_email(UserId, Ident, Context);
+        <<"email">> -> 
+            lager:info("send verify email"),
+            send_verify_email(UserId, Ident, Context);
         _ -> false
     end.
 
@@ -240,7 +242,8 @@ send_verify_email(UserId, Ident, Context) ->
         {email, Email},
         {verify_key, Key}
     ],
-    z_email:send_render(Email, "email_verify.tpl", Vars, z_acl:sudo(Context)),
+    A = z_email:send_render(Email, "email_verify.tpl", Vars, z_acl:sudo(Context)),
+    lager:info("z_email:send_render -> ~p",[A]),
     ok.
 
 

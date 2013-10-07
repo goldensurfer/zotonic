@@ -133,6 +133,10 @@ send_render(To, HtmlTemplate, Vars, Context) ->
 
 %% @doc Send a html and text message to an email address, render the message using two templates.
 send_render(To, HtmlTemplate, TextTemplate, Vars, Context) ->
+    lager:info("send render: To -> ~p",[To]),
+    lager:info("HtmlTemplate -> ~p",[HtmlTemplate]),
+    lager:info("TextTemplate -> ~p",[TextTemplate]),
+    lager:info("Vars -> ~p",[Vars]),
 	z_email_server:send(#email{queue=false, to=To, from=proplists:get_value(email_from, Vars), 
 	                        html_tpl=HtmlTemplate, text_tpl=TextTemplate, vars=Vars}, Context).
 
