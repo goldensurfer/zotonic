@@ -199,16 +199,22 @@ observe_rsc_update(#rsc_update{}, {Changed, Props}, _Context) ->
 %% @todo Cache this information in the session (oid) so that we don't need to refetch it
 %% on every request (each request is a continuation with a new logon).
 logon(UserId, Context) ->
+    lager:info("logon: ~p",[Context]),
+    lager:info("userid: ~p",[UserId]),
+
     % Fetch roles the user is member of
     ContextAdmin = z_acl:sudo(Context),
+    lager:info("context admin: ~p",[ContextAdmin]),
     case m_edge:subjects(UserId, acl_role_member, ContextAdmin) of
         [] ->
+            lager:info("roles: anon"),
             %% When not member of a role then fallback to the member or anonymous role.
             case m_rsc:name_to_id(?ROLE_MEMBER, ContextAdmin) of
                 {ok, RoleMember} -> logon_roles(UserId, [RoleMember], Context, ContextAdmin);
                 {error, _} -> logon_roles(UserId, [], Context, ContextAdmin)
             end;
         Roles ->
+            lager:info("Roles: ~p",[Roles]),
             logon_roles(UserId, Roles, Context, ContextAdmin)
     end.
 

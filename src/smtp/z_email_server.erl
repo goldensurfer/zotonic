@@ -360,6 +360,8 @@ send_email(Id, Recipient, Email, Context, State) ->
                           retry_on=inc_timestamp(os:timestamp(), 0),
                           sent=undefined,
                           pickled_context=z_context:pickle(Context)},
+
+    lager:info("QEmail: ~p",[QEmail]),
     QEmailTransFun = fun() -> mnesia:write(QEmail) end,
     {atomic, ok} = mnesia:transaction(QEmailTransFun),        
     case Email#email.queue orelse length(State#state.sending) > ?EMAIL_MAX_SENDING of
@@ -369,6 +371,7 @@ send_email(Id, Recipient, Email, Context, State) ->
 
 
 spawn_send(Id, Recipient, Email, Context, State) ->
+    lager:info("spawn send: ~p ~p ~p ~p",[Id, Recipient, Email, State]),
     case is_valid_email(Recipient) of
         true ->
             spawn_send_checked(Id, Recipient, Email, Context, State);
@@ -417,6 +420,7 @@ spawn_send_checked(Id, Recipient, Email, Context, State) ->
                          {relay, RecipientDomain}]
                 end,
 
+                lager:info("SmtpOpts... ~p",[SmtpOpts]),
 
             LogEmail = #log_email{
                 message_nr=Id,
