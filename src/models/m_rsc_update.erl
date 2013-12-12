@@ -31,7 +31,7 @@
     duplicate/3,
 
     flush/2,
-    
+    preflight_check/3,
     delete_nocheck/2,
     props_filter/3,
 
