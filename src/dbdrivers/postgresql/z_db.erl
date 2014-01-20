@@ -68,7 +68,7 @@
 ]).
 
 
--include_lib("pgsql.hrl").
+-include("include/pgsql.hrl").
 -include_lib("zotonic.hrl").
 
 -compile([{parse_transform, lager_transform}]).

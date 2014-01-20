@@ -28,7 +28,7 @@
 -export([close/2, close/3, sync/1]).
 -export([with_transaction/2]).
 
--include("pgsql.hrl").
+-include("../include/pgsql.hrl").
 -include("zotonic.hrl").
 
 -define(TIMEOUT, 50000).

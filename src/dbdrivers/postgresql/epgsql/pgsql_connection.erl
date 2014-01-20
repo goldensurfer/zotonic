@@ -31,7 +31,7 @@
 -export([querying/2, parsing/2, binding/2, describing/2]).
 -export([executing/2, closing/2, synchronizing/2]).
 
--include("pgsql.hrl").
+-include("../include/pgsql.hrl").
 -include("zotonic.hrl").
 
 -record(state, {
