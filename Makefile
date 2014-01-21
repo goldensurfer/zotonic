@@ -13,11 +13,11 @@ dep_bert = git://github.com/zotonic/bert.erl.git master
 dep_dh_date = git://github.com/zotonic/dh_date.git master
 dep_eiconv = git://github.com/zotonic/eiconv.git master
 dep_gen_smtp = git://github.com/zotonic/gen_smtp.git master
-dep_mimetypes = git://github.com/zotonic/mimetypes.git master
+dep_mimetypes = https://github.com/goldensurfer/mimetypes master
 dep_mochiweb = git://github.com/zotonic/mochiweb.git master
 dep_ua_classifier = git://github.com/zotonic/ua_classifier.git master
 dep_webzmachine = https://github.com/goldensurfer/webzmachine master
 dep_z_stdlib = git://github.com/zotonic/z_stdlib.git master
-dep_folsom = git://github.com/boundary/folsom.git master
+dep_folsom = https://github.com/goldensurfer/folsom master
 
 include ../../erlang.mk
