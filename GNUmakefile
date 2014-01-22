@@ -20,4 +20,4 @@ dep_webzmachine = https://github.com/goldensurfer/webzmachine master
 dep_z_stdlib = git://github.com/zotonic/z_stdlib.git master
 dep_folsom = https://github.com/goldensurfer/folsom master
 
-include ../../erlang.mk
+include erlang.mk
