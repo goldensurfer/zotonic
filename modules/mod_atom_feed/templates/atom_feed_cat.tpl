@@ -5,6 +5,12 @@
 	<link rel="self" type="application/atom+xml" href="{{ site_url }}{% url atom_feed cat=cat %}" />
 	<id>{{ site_url }}{% url atom_feed cat=cat %}</id>
 	<title>{{ m.config.site.title.value|escapexml }} - {{ m.rsc[cat].title|escapexml }}</title>
+	<author>
+		{% with r.o.author[1] as author_id %}
+		<name>{{ m.site.name |escapexml }}</name>
+		<email>{{ m.site.email |escapexml }}</email>
+		{% endwith %}
+	</author>
 
     {% if upcoming %}
 	{% for id in m.search[{upcoming cat=cat}] %}
