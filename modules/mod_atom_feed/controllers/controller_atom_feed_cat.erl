@@ -92,9 +92,13 @@ expires(ReqData, State) ->
 provide_content(ReqData, Context) ->
     Context1 = z_context:set_reqdata(ReqData, Context),
     CatName = m_category:id_to_name(z_context:get_q(cat, Context1), Context1),
+    Name = m_site:get(name, Context),
+    Email = m_site:get(email, Context),
     F = fun() ->
         Vars = [
             {cat, CatName},
+            {name, Name},
+            {email, Email},
             {upcoming, z_context:get(upcoming, Context1)},
             {updated, z_context:get(last_modified, Context1)},
             {site_url, z_context:abs_url("", Context1)}
