@@ -4,12 +4,6 @@
 			<id>{{ r.uri|escapexml }}</id>
 			<updated>{{ r.modified|date:"c" }}</updated>
 			<published>{% if upcoming %}{{ r.date_start|date:"c" }}{% else %}{{ r.publication_start|date:"c" }}{% endif %}</published>
-			<author>
-				{% with r.o.author[1] as author_id %}
-				<name>{{ m.rsc[author_id|default:r.creator_id].title|escapexml }}</name>
-				<uri>{{ m.rsc[author_id|default:r.creator_id].uri|escapexml }}</uri>
-				{% endwith %}
-			</author>
 			
 			<link rel="alternate" type="text/html" href="{{ site_url }}{{ r.page_url|escapexml }}"/>
 			
@@ -22,12 +16,8 @@
 			{% endfor %}
 
 			<title>{{ r.title }}</title>
-			{% if r.body %}
-				<summary>{{ r.summary }}</summary>
-				<content type="html">{{ r.body|escapexml }}</content>
-			{% else %}
-				<content type="text">{{ r.summary|escapexml }}</content>
-			{% endif %}
+		        <summary>{{ r.summary }}</summary>
+
 			{% if medium.filename %}
 				<content type="{{ medium.mime }}" src="{{ site_url }}{% url media_attachment star=medium.filename %}" /> 
 			{% endif %}
