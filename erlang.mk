@@ -16,6 +16,8 @@
 
 PROJECT ?= $(notdir $(CURDIR))
 
+SITENAME = mamba_website
+
 # Packages database file.
 
 PKG_FILE ?= $(CURDIR)/.erlang.mk.packages.v1
@@ -141,7 +143,7 @@ endef
 
 ebin/$(PROJECT).app: $(shell find src -type f -name \*.erl) \
 		$(shell find modules -type f -name \*.erl) \
-		$(shell find ../../priv -type f -name \*.erl) \
+		$(shell find ../../priv/$(SITENAME) -type f -name \*.erl) \
 		$(shell find src -type f -name \*.core) \
 		$(shell find src -type f -name \*.xrl) \
 		$(shell find src -type f -name \*.yrl) \
