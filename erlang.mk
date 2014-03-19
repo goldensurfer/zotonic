@@ -141,7 +141,7 @@ endef
 
 ebin/$(PROJECT).app: $(shell find src -type f -name \*.erl) \
 		$(shell find modules -type f -name \*.erl) \
-		$(shell find ../../priv/yoursite -type f -name \*.erl) \
+		$(shell find ../../priv -type f -name \*.erl) \
 		$(shell find src -type f -name \*.core) \
 		$(shell find src -type f -name \*.xrl) \
 		$(shell find src -type f -name \*.yrl) \
