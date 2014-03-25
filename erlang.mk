@@ -16,7 +16,7 @@
 
 PROJECT ?= $(notdir $(CURDIR))
 
-SITENAME = mamba_website
+SITENAME = yoursite
 
 # Packages database file.
 
