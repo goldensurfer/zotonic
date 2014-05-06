@@ -36,6 +36,7 @@
 
 -record(state, {
           async,
+          refs,
           reader,
           sock,
           parameters = [],
@@ -125,6 +126,7 @@ database(C, Timeout) ->
 %% -- gen_fsm implementation --
 
 init([]) ->
+    lager:info("gen_fsm init..."),
     process_flag(trap_exit, true),
     {ok, startup, #state{}}.
 
@@ -154,14 +156,22 @@ handle_event(Event, _State_Name, State) ->
 handle_sync_event(Event, _From, _State_Name, State) ->
     {stop, {unsupported_sync_event, Event}, State}.
 
-handle_info({'EXIT', Pid, Reason}, _State_Name, State = #state{reader = Pid}) ->
+handle_info(A = {'EXIT', Pid, Reason}, _State_Name, State = #state{reader = Pid}) ->
+    lager:error("======== pg-conn EXIT-Request ~p",[A]),
     {stop, Reason, State};
+
+%{'DOWN',Ref,process,Pid,Reason}
+handle_info(A = {'DOWN', Pid, Reason}, _State_Name, State) ->
+  %Request = find_request_pure_magic_and_ponies(Ref, State),
+  lager:error("======== pg-conn DOWN-Request ~p",[A]),
+  {noreply, State};
 
 handle_info(Info, _State_Name, State) ->
     {stop, {unsupported_info, Info}, State}.
 
-terminate(_Reason, _State_Name, State = #state{sock = Sock})
+terminate(Reason, State_Name, State = #state{sock = Sock})
   when Sock =/= undefined ->
+    lager:error("====== terminate: ~p ~p",[Reason, State_Name]),
     send(State, $X, []),
     gen_tcp:close(Sock);
 
@@ -180,12 +190,16 @@ startup({connect, Host, Username, Password, Opts}, From, State) ->
     case gen_tcp:connect(Host, Port, Sock_Opts) of
         {ok, Sock} ->
             Reader = spawn_link(?MODULE, read, [self(), Sock, <<>>]),
-
+            lager:error("====== spawn_link pg-conn -> ~p",[Reader]),
             Opts2 = ["user", 0, Username, 0],
             case proplists:get_value(database, Opts, undefined) of
                 undefined -> Opts3 = Opts2;
                 Database  -> Opts3 = [Opts2 | ["database", 0, Database, 0]]
             end,
+
+            Ref = erlang:monitor(process, Reader),
+            Refs = State#state.refs,
+            lager:error("====== pg-conn Refs ~p Pid: ~p",[Ref, Reader]),
 
             put(username, Username),
             put(password, Password),
@@ -193,6 +207,7 @@ startup({connect, Host, Username, Password, Opts}, From, State) ->
                                  sock     = Sock,
                                  reply_to = From,
                                  async    = Async,
+%                                 refs = [ {Ref, Reader, Request} | Refs],
                                  database = proplists:get_value(database, Opts, undefined)},
             send(State2, [<<196608:32>>, Opts3, 0]),
 

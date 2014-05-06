@@ -75,6 +75,7 @@ status(P) ->
 %% -- gen_server implementation --
 
 init({Name, Size, Opts}) ->
+    lager:info("pgsql pool init..."),
     process_flag(trap_exit, true),
     Id = case Name of 
             undefined -> self();
@@ -180,7 +181,9 @@ handle_info(close_unused, State) ->
     {noreply, State#state{connections=Used}};
 
 %% Requestor we are monitoring went down. Kill the associated connection, as it might be in an unknown state.
-handle_info({'DOWN', M, process, _Pid, _Info}, #state{monitors = Monitors} = State) ->
+handle_info(A = {'DOWN', M, process, Pid, _Info}, #state{monitors = Monitors} = State) ->
+    lager:error("------ pool-DOWN: ~p~n------~p",[A, Monitors]),
+    lager:error("proc info -> ~p~n",[erlang:process_info(Pid)]),
     case lists:keytake(M, 2, Monitors) of
         {value, {C, M}, Monitors2} ->
             erlang:demonitor(M),
@@ -191,7 +194,8 @@ handle_info({'DOWN', M, process, _Pid, _Info}, #state{monitors = Monitors} = Sta
     end;
 
 %% One of our database connections crashed. Clean up our administration.
-handle_info({'EXIT', ConnectionPid, Reason}, #state{opts=Opts} = State) ->
+handle_info(B = {'EXIT', ConnectionPid, Reason}, #state{opts=Opts} = State) ->
+    lager:error("------ pool-EXIT: ~p~n------ ~p",[B, State#state.monitors]),
     % Demonitor the process holding the connection
     case Reason of
         normal -> nop;
