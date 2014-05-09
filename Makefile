@@ -5,7 +5,7 @@ ERLC_OPTS = -Werror +debug_info +warn_export_all +warn_export_vars +warn_shadow_
 PLT_APPS = hipe sasl mnesia crypto compiler syntax_tools
 DIALYZER_OPTS = -Werror_handling -Wrace_conditions -Wunmatched_returns | fgrep -v -f ./dialyzer.ignore-warning
 
-DEPS_DIR = ../../deps
+DEPS_DIR = deps
 DEPS = lager bert dh_date eiconv gen_smtp mimetypes mochiweb ua_classifier webzmachine z_stdlib folsom
 
 dep_lager = https://github.com/basho/lager.git 2.0.0
