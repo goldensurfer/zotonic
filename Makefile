@@ -8,16 +8,16 @@ DIALYZER_OPTS = -Werror_handling -Wrace_conditions -Wunmatched_returns | fgrep -
 DEPS_DIR = deps
 DEPS = lager bert dh_date eiconv gen_smtp mimetypes mochiweb ua_classifier webzmachine z_stdlib folsom
 
-dep_lager = https://github.com/basho/lager.git 2.0.0
-dep_bert = git://github.com/zotonic/bert.erl.git master
-dep_dh_date = git://github.com/zotonic/dh_date.git master
-dep_eiconv = git://github.com/zotonic/eiconv.git master
-dep_gen_smtp = git://github.com/zotonic/gen_smtp.git master
-dep_mimetypes = https://github.com/goldensurfer/mimetypes master
-dep_mochiweb = git://github.com/zotonic/mochiweb.git master
-dep_ua_classifier = git://github.com/zotonic/ua_classifier.git master
-dep_webzmachine = https://github.com/goldensurfer/webzmachine master
-dep_z_stdlib = git://github.com/zotonic/z_stdlib.git master
-dep_folsom = https://github.com/goldensurfer/folsom master
+dep_lager = https://github.com/goldensurfer/lager 2.0.0b
+dep_bert = https://github.com/goldensurfer/bert.erl 1.2
+dep_dh_date = https://github.com/goldensurfer/dh_date 1.2
+dep_eiconv = https://github.com/goldensurfer/eiconv 1.2
+dep_gen_smtp = https://github.com/goldensurfer/gen_smtp 1.2
+dep_mimetypes = https://github.com/goldensurfer/mimetypes 1.2
+dep_mochiweb = https://github.com/goldensurfer/mochiweb v2.9.0
+dep_ua_classifier = https://github.com/goldensurfer/ua_classifier 1.2
+dep_webzmachine = https://github.com/goldensurfer/webzmachine 1.2
+dep_z_stdlib = https://github.com/goldensurfer/z_stdlib 1.2
+dep_folsom = https://github.com/goldensurfer/folsom 1.3
 
 include erlang.mk
